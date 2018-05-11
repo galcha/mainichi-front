@@ -12,6 +12,10 @@ export default {
 
 <style>
   body {
-    font-family: "Mplus 1p";
+    font-family: "Mplus 1p", "Raleway";
+  }
+
+  .application {
+    background: linear-gradient(141deg, #ED4264, #FFEDBC) !important;
   }
 </style>

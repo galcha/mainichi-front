@@ -7,16 +7,16 @@
                 </div>
             </v-flex>
             <v-flex d-flex xs12 sm4 md4>
-                <v-layout row wrap >
+                <v-layout row wrap>
                     <v-flex d-flex>
                         <v-layout row wrap>
                             <v-flex d-flex xs12>
-                                <div class="kana">
+                                <div class="kana text-md-left">
                                     <span>{{ word.japanese[0].reading }}</span>
                                 </div>
                             </v-flex>
                             <v-flex d-flex xs12>
-                                <div class="english">
+                                <div class="english text-md-left">
                                     <span v-for="(englishWord, index) in word.senses[0].english_definitions">{{ englishWord }}<span v-if="index !== word.senses[0].english_definitions.length - 1">, </span></span>
                                 </div>
                             </v-flex>
@@ -58,12 +58,10 @@
     .kana {
         font-family: "Hannari";
         font-size: 35px;
-        text-align:left;
     }
 
     .english {
         font-size: 25px;
-        text-align:left;
     }
 
     .container-centered {
