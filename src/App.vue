@@ -54,4 +54,10 @@
         font-family: 'Raleway';
         font-size: 15px;
     }
+
+    @media screen and (max-width: 640px) {
+        .legend {
+            display:none;
+        }
+    }
 </style>

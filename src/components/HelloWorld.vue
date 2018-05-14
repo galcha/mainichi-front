@@ -1,5 +1,5 @@
 <template>
-    <div class="content">
+    <div class="content" v-if="word != null">
         <div class="kanji">
             <span>{{ word.japanese[0].word }}</span>
         </div>
@@ -16,10 +16,10 @@
         </div>
 
         <div class="another">
-            <div>
+            <div class="refresh">
                 <i class="material-icons">autorenew</i>Refresh <span>もう一つ</span>
             </div>
-            <div>
+            <div class="history">
                 <i class="material-icons">history</i>History <span>歴史</span>
             </div>
         </div>
@@ -33,6 +33,7 @@
         data() {
             return {
                 word: null
+
             }
         },
         created: function () {
@@ -47,7 +48,7 @@
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style scoped lang="scss">
     .kanji {
         font-size: 60px;
     }
@@ -65,13 +66,6 @@
         display: flex;
     }
 
-    @media screen and (max-width: 640px) {
-        .content {
-            flex-direction: column;
-        }
-
-    }
-
     .translation {
         margin-left: 30px;
     }
@@ -79,20 +73,45 @@
     .another {
         margin-left: 50px;
         padding: 10px;
+
+        div {
+
+            padding:5px;
+
+            &:hover {
+                background: linear-gradient(128deg, #eb008f, #ffd000);
+                border-radius: 40px;
+            }
+        }
+
+        span {
+            padding-left:5px;
+            font-size: 12px;
+            color: #666;
+        }
     }
 
-    .another div {
-        padding:5px;
-        transition: all;
-        transition-duration: 0.2s;
+    @media screen and (max-width: 640px) {
+        .content {
+            flex-direction: column;
+        }
+
+        .translation {
+            margin-left: 0;
+        }
+
+        .another {
+            margin-left: 0;
+            padding: 0;
+        }
     }
 
-    .another div:hover {
-        background: linear-gradient(128deg, #eb008f, #ffd000) !important;
-    }
+    .refresh, .history {
+        display: flex;
+        align-items: center;
 
-    .another span {
-        font-size: 12px;
-        color: #666;
+        i {
+            padding-right: 5px;
+        }
     }
 </style>
