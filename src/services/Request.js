@@ -1,15 +1,21 @@
 import axios from 'axios'
 
 export default {
-    fetchWord() {
-        return axios.get('http://localhost:8000/word/')
+    fetchWord(offset) {
+        return axios.get('http://localhost:8000/word/?offset='+offset)
             .then(response => {
                 return response.data
             })
             .catch(error => {
                 return {
-                    "japanese": [{"word": "針鼠", "reading": "はりねずみ"}],
-                    "senses": [{"english_definitions": ["Hedgehog"]}]
+                    original: "子供",
+                    originalReading: "こども",
+                    translation: [
+                        "child"
+                    ],
+                    wordType: [
+                        "Noun"
+                    ]
                 };
             })
     }

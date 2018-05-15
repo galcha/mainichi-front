@@ -1,22 +1,28 @@
 <template>
     <div class="content" v-if="word != null">
         <div class="kanji">
-            <span>{{ word.japanese[0].word }}</span>
+            <span>{{ word.original }}</span>
         </div>
 
         <div class="translation">
             <div class="kana text-md-left">
-                <span>{{ word.japanese[0].reading }}</span>
+                <span>{{ word.originalReading }}</span>
             </div>
 
             <div class="english text-md-left">
-                <span v-for="(englishWord, index) in word.senses[0].english_definitions">{{ englishWord }}<span
-                        v-if="index !== word.senses[0].english_definitions.length - 1">, </span></span>
+                <span v-for="(englishWord, index) in word.translation">
+
+                    <span v-if="index == 0">{{ englishWord }}</span>
+
+                    <ul class="english-more" v-if="word.translation.length > 1">
+                        <li v-if="index !== 0">{{ englishWord }}</li>
+                    </ul>
+                </span>
             </div>
         </div>
 
         <div class="another">
-            <div class="refresh">
+            <div class="refresh" v-on:click="refresh">
                 <i class="material-icons">autorenew</i>Refresh <span>もう一つ</span>
             </div>
             <div class="history">
@@ -31,17 +37,33 @@
 
     export default {
         data() {
-            return {
-                word: null
+            var offset = localStorage.getItem('offset');
+            if(offset === 'undefined') {
+                offset = 0;
+            }
 
+            return {
+                word: null,
+                offset: offset
             }
         },
         created: function () {
             request
-                .fetchWord()
+                .fetchWord(this.offset)
                 .then(response => {
                     this.word = response;
                 })
+        },
+        methods: {
+            refresh: function (event) {
+                request
+                    .fetchWord(++this.offset)
+                    .then(response => {
+                        this.word = response;
+                        localStorage.setItem('offset', this.offset)
+                    });
+
+            }
         }
     }
 
@@ -76,7 +98,7 @@
 
         div {
 
-            padding:5px;
+            padding: 5px;
 
             &:hover {
                 background: linear-gradient(128deg, #eb008f, #ffd000);
@@ -85,7 +107,7 @@
         }
 
         span {
-            padding-left:5px;
+            padding-left: 5px;
             font-size: 12px;
             color: #666;
         }
@@ -94,24 +116,36 @@
     @media screen and (max-width: 640px) {
         .content {
             flex-direction: column;
+            align-items: center;
         }
 
         .translation {
             margin-left: 0;
+            text-align: center;
         }
 
         .another {
             margin-left: 0;
+            margin-top: 20px;
             padding: 0;
         }
     }
 
     .refresh, .history {
+        cursor: pointer;
         display: flex;
         align-items: center;
 
         i {
             padding-right: 5px;
         }
+    }
+
+    .english-more {
+        font-size: 12px;
+        color: #777;
+        list-style-type: none;
+        margin:0;
+        padding:1px;
     }
 </style>
