@@ -1,44 +1,16 @@
 <template>
     <div class="main">
         <div class="container-centered">
+            <h1>毎日.<span>Mainichi</span></h1>
             <router-view/>
 
         </div>
         <footer class="footer">
-            Mainichi *
-            <span class="legend">Daily japanese word, for every level !</span>
-        </footer>
-        <script type="text/x-template" id="modal-template">
-          <transition name="modal">
-            <div class="modal-mask">
-              <div class="modal-wrapper">
-                <div class="modal-container">
-
-                  <div class="modal-header">
-                    <slot name="header">
-                      default header
-                    </slot>
-                  </div>
-
-                  <div class="modal-body">
-                    <slot name="body">
-                      default body
-                    </slot>
-                  </div>
-
-                  <div class="modal-footer">
-                    <slot name="footer">
-
-                      <button class="modal-default-button" @click="$emit('close')">
-                        Close
-                      </button>
-                    </slot>
-                  </div>
-                </div>
-              </div>
+            <div>
+                Mainichi *
+                <span class="legend">Daily japanese word, for every level !</span>
             </div>
-          </transition>
-        </script>
+        </footer>
     </div>
 </template>
 
@@ -48,7 +20,7 @@
     }
 </script>
 
-<style>
+<style lang="scss">
     html {
         height: 100%;
     }
@@ -66,10 +38,35 @@
     .container-centered {
         height: calc(100% - 50px);
         display: flex;
+        flex-wrap: wrap;
         align-items: center;
         justify-content: center;
         background: linear-gradient(148deg, #ebbaeb, #fffba7) !important;
+    }
 
+    h1 {
+        flex: 1 100%;
+        text-align: center;
+        font-size: 90px;
+        padding:0;
+        margin:0;
+        font-weight:800;
+        text-shadow: 3px 2px 0px #ff009b;
+        color: #333;
+
+        span {
+            font-size: 25px;
+            display: block;
+            text-shadow: none;
+            color: black;
+            font-family: 'Poiret One', cursive;
+            position: relative;
+            top: -24px;
+            left: 50.5%;
+            width: 100px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
     }
 
     .footer {
@@ -78,7 +75,12 @@
         color:white;
         font-size: 30px;
         padding-left:20px;
-        font-family: 'Gamja Flower', cursive;
+        font-family: 'Poiret One', cursive;
+
+        div {
+            position: relative;
+            top: 8px;
+        }
     }
 
     .legend {
@@ -90,73 +92,9 @@
         .legend {
             display:none;
         }
-    }
 
-    .modal-mask {
-        position: fixed;
-        z-index: 9998;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, .5);
-        display: table;
-        transition: opacity .3s ease;
-    }
-
-    .modal-wrapper {
-        display: table-cell;
-        vertical-align: middle;
-    }
-
-    .modal-container {
-        width: 300px;
-        margin: 0px auto;
-        padding: 20px 30px;
-        background-color: #fff;
-        border-radius: 2px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
-        transition: all .3s ease;
-        font-family: Helvetica, Arial, sans-serif;
-    }
-
-    .modal-header h3 {
-        margin-top: 0;
-        color: #eb0049;
-    }
-
-    .modal-body {
-        margin: 20px 0;
-    }
-
-    .modal-default-button {
-        width: 100%;
-        padding: 15px;
-        background: #eb7a1d;
-        color: white;
-        font-size: 14px;
-    }
-
-    /*
-     * The following styles are auto-applied to elements with
-     * transition="modal" when their visibility is toggled
-     * by Vue.js.
-     *
-     * You can easily play with the modal transition by editing
-     * these styles.
-     */
-
-    .modal-enter {
-        opacity: 0;
-    }
-
-    .modal-leave-active {
-        opacity: 0;
-    }
-
-    .modal-enter .modal-container,
-    .modal-leave-active .modal-container {
-        -webkit-transform: scale(1.1);
-        transform: scale(1.1);
+        h1 {
+            display: none;
+        }
     }
 </style>
