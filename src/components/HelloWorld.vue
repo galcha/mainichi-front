@@ -11,7 +11,6 @@
 
             <div class="english text-md-left">
                 <span v-for="(englishWord, index) in word.translation">
-
                     <span v-if="index == 0">{{ englishWord }}</span>
 
                     <ul class="english-more" v-if="word.translation.length > 1">
@@ -25,10 +24,18 @@
             <div class="refresh" v-on:click="refresh">
                 <i class="material-icons">autorenew</i>Refresh <span>もう一つ</span>
             </div>
-            <div class="history">
+            <div class="history" v-on:click="showHistory = !showHistory">
                 <i class="material-icons">history</i>History <span>歴史</span>
             </div>
         </div>
+        <modal v-if="showHistory" @close="showHistory = false">
+            <h3 slot="header">History</h3>
+            <div slot="body" class="history-list">
+                <ul>
+                    <li v-for="(word, index) in history.slice().reverse()" v-on:click="setCurrentWord(word); showHistory = false;">{{ word.original }} ({{ word.originalReading }}) <span>{{ word.translation[0] }}</span></li>
+                </ul>
+            </div>
+        </modal>
     </div>
 </template>
 
@@ -42,8 +49,15 @@
                 offset = 0;
             }
 
+            var history = JSON.parse(localStorage.getItem('history'));
+            if(history === 'undefined' || history === null) {
+                history = [];
+            }
+
             return {
                 word: null,
+                history: history,
+                showHistory: false,
                 offset: offset
             }
         },
@@ -52,6 +66,11 @@
                 .fetchWord(this.offset)
                 .then(response => {
                     this.word = response;
+
+                    if(this.history.length === 0 || this.history[this.history.length -1].original !== response.original) {
+                        this.history.push(response);
+                    }
+                    localStorage.setItem('history', JSON.stringify(this.history));
                 })
         },
         methods: {
@@ -60,13 +79,19 @@
                     .fetchWord(++this.offset)
                     .then(response => {
                         this.word = response;
-                        localStorage.setItem('offset', this.offset)
-                    });
+                        localStorage.setItem('offset', this.offset);
 
+                        if(this.history[this.history.length -1].original !== response.original) {
+                            this.history.push(response);
+                        }
+                        localStorage.setItem('history', JSON.stringify(this.history));
+                    });
+            },
+            setCurrentWord: function (word) {
+                this.word = word;
             }
         }
     }
-
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -148,4 +173,30 @@
         margin:0;
         padding:1px;
     }
+
+    .history-list {
+        max-height: 400px;
+        overflow-y: scroll;
+
+        ul {
+            margin:0;
+            padding:0;
+            list-style-type: none;
+
+            li {
+                padding: 10px;
+                cursor: pointer;
+
+                &:hover {
+                    background: linear-gradient(128deg, #eb008f, #ffd000);
+                }
+            }
+        }
+
+        span {
+            color: #777;
+            font-size: 12px;
+        }
+    }
+
 </style>
