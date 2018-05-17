@@ -8,10 +8,10 @@ export default {
             })
             .catch(error => {
                 return {
-                    original: "子供",
-                    originalReading: "こども",
+                    original: "毎日",
+                    originalReading: "まいにち",
                     translation: [
-                        "child"
+                        "Every day"
                     ],
                     wordType: [
                         "Noun"

@@ -41,8 +41,10 @@
 
 <script>
     import request from '../services/Request'
+    import Modal from './Modal.vue'
 
     export default {
+        components: { Modal },
         data() {
             var offset = localStorage.getItem('offset');
             if(offset === 'undefined') {
@@ -111,6 +113,7 @@
 
     .content {
         display: flex;
+        height:50%;
     }
 
     .translation {
