@@ -1,7 +1,7 @@
 <template>
     <div class="main">
         <div class="container-centered">
-            <h1>毎日<span>Mainichi</span></h1>
+            <h1>毎日.<span>Mainichi</span></h1>
             <router-view/>
 
         </div>
@@ -52,14 +52,20 @@
         margin:0;
         font-weight:800;
         text-shadow: 3px 2px 0px #ff009b;
-        color: #444;
+	    color: #333;
 
         span {
-            font-size: 40px;
+            font-size: 25px;
             display: block;
             text-shadow: none;
-            color: #eb0084;
+            color: black;
             font-family: 'Poiret One', cursive;
+            position: relative;
+            top: -24px;
+            left: 50.5%;
+            width: 100px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
     }
 

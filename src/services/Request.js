@@ -2,7 +2,7 @@ import axios from 'axios'
 
 export default {
     fetchWord(offset) {
-        return axios.get('http://localhost:8000/word/?offset='+offset)
+        return axios.get(process.env.API_ROOT + 'word/?offset=' + offset)
             .then(response => {
                 return response.data
             })
