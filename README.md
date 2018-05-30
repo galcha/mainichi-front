@@ -1,6 +1,11 @@
 # mainichi-front
 
-> A Vue.js project
+Powered by Vue.js
+
+> http://mainichi-kotoba.com
+
+A website that shows one japanese vocabulary word per day, with its english counterpart.
+
 
 ## Build Setup
 
