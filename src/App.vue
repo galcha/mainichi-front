@@ -1,6 +1,9 @@
 <template>
     <div class="main">
+        <div id="particles"></div>
+
         <div class="container-centered">
+
             <h1>毎日.<span>Mainichi</span><div class="bar"></div></h1>
             <router-view/>
         </div>
@@ -15,11 +18,28 @@
 
 <script>
     export default {
-        name: 'App'
+        name: 'App',
+        mounted() {
+            let script = document.createElement('script')
+            script.setAttribute('src', 'static/particles.min.js')
+            document.head.appendChild(script)
+            setTimeout(function(){
+                particlesJS.load('particles', 'static/particlesjs-config.json', function() {
+                    console.log('callback - particles.js config loaded');
+                })}, 300
+            );
+        }
     }
 </script>
 
 <style lang="scss">
+    #particles {
+        width: 100%;
+        height: 90%;
+        position: fixed;
+        left: 0px;
+        top: 0;
+    }
     html {
         height: 100%;
     }
@@ -41,7 +61,6 @@
         align-items: center;
         justify-content: center;
         background: linear-gradient(148deg, #ebbaeb, #fffba7) !important;
-
         &.isLoading {
             height: 1%;
         }
@@ -58,6 +77,7 @@
         transition: text-shadow 0.2s linear;
         animation: 1s shadow ease-out forwards;
         animation-delay: 0.5s;
+        z-index:10000;
 
         span {
             font-size: 25px;

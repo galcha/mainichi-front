@@ -118,6 +118,8 @@
     .content {
         display: flex;
         height: 50%;
+        z-index:10000;
+
     }
 
     .translation {
