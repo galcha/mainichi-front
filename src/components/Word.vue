@@ -1,15 +1,16 @@
 <template>
-    <div class="content" v-if="word != null">
-        <div class="kanji">
-            <span>{{ word.original }}</span>
-        </div>
-
-        <div class="translation">
-            <div class="kana text-md-left">
-                <span>{{ word.originalReading }}</span>
+    <transition name="fade">
+        <div class="content" v-if="word != null">
+            <div class="kanji">
+                <span>{{ word.original }}</span>
             </div>
 
-            <div class="english text-md-left">
+            <div class="translation">
+                <div class="kana text-md-left">
+                    <span>{{ word.originalReading }}</span>
+                </div>
+
+                <div class="english text-md-left">
                 <span v-for="(englishWord, index) in word.translation">
                     <span v-if="index == 0">{{ englishWord }}</span>
 
@@ -17,26 +18,29 @@
                         <li v-if="index !== 0">{{ englishWord }}</li>
                     </ul>
                 </span>
+                </div>
             </div>
-        </div>
 
-        <div class="another">
-            <div class="refresh" v-on:click="refresh">
-                <i class="material-icons">autorenew</i>Refresh <span>もう一つ</span>
+            <div class="another">
+                <div class="refresh" v-on:click="refresh">
+                    <i class="material-icons">autorenew</i>Refresh <span>もう一つ</span>
+                </div>
+                <div class="history" v-on:click="showHistory = !showHistory">
+                    <i class="material-icons">history</i>History <span>歴史</span>
+                </div>
             </div>
-            <div class="history" v-on:click="showHistory = !showHistory">
-                <i class="material-icons">history</i>History <span>歴史</span>
-            </div>
+            <modal v-if="showHistory" @close="showHistory = false">
+                <h3 slot="header">History</h3>
+                <div slot="body" class="history-list">
+                    <ul>
+                        <li v-for="(word, index) in history.slice().reverse()"
+                            v-on:click="setCurrentWord(word); showHistory = false;">{{ word.original
+                            }} ({{ word.originalReading }}) <span>{{ word.translation[0] }}</span></li>
+                    </ul>
+                </div>
+            </modal>
         </div>
-        <modal v-if="showHistory" @close="showHistory = false">
-            <h3 slot="header">History</h3>
-            <div slot="body" class="history-list">
-                <ul>
-                    <li v-for="(word, index) in history.slice().reverse()" v-on:click="setCurrentWord(word); showHistory = false;">{{ word.original }} ({{ word.originalReading }}) <span>{{ word.translation[0] }}</span></li>
-                </ul>
-            </div>
-        </modal>
-    </div>
+    </transition>
 </template>
 
 <script>
@@ -44,15 +48,15 @@
     import Modal from './Modal.vue'
 
     export default {
-        components: { Modal },
+        components: {Modal},
         data() {
             var offset = localStorage.getItem('offset');
-            if(offset === 'undefined') {
+            if (offset === 'undefined') {
                 offset = 0;
             }
 
             var history = JSON.parse(localStorage.getItem('history'));
-            if(history === 'undefined' || history === null) {
+            if (history === 'undefined' || history === null) {
                 history = [];
             }
 
@@ -60,7 +64,7 @@
                 word: null,
                 history: history,
                 showHistory: false,
-                offset: offset
+                offset: offset,
             }
         },
         created: function () {
@@ -69,7 +73,7 @@
                 .then(response => {
                     this.word = response;
 
-                    if(this.history.length === 0 || this.history[this.history.length -1].original !== response.original) {
+                    if (this.history.length === 0 || this.history[this.history.length - 1].original !== response.original) {
                         this.history.push(response);
                     }
                     localStorage.setItem('history', JSON.stringify(this.history));
@@ -83,7 +87,7 @@
                         this.word = response;
                         localStorage.setItem('offset', this.offset);
 
-                        if(this.history[this.history.length -1].original !== response.original) {
+                        if (this.history[this.history.length - 1].original !== response.original) {
                             this.history.push(response);
                         }
                         localStorage.setItem('history', JSON.stringify(this.history));
@@ -113,7 +117,7 @@
 
     .content {
         display: flex;
-        height:50%;
+        height: 50%;
     }
 
     .translation {
@@ -164,6 +168,10 @@
         display: flex;
         align-items: center;
 
+        div {
+            transition: background 1s ease-out;
+        }
+
         i {
             padding-right: 5px;
         }
@@ -173,8 +181,8 @@
         font-size: 12px;
         color: #777;
         list-style-type: none;
-        margin:0;
-        padding:1px;
+        margin: 0;
+        padding: 1px;
     }
 
     .history-list {
@@ -182,8 +190,8 @@
         overflow-y: scroll;
 
         ul {
-            margin:0;
-            padding:0;
+            margin: 0;
+            padding: 0;
             list-style-type: none;
 
             li {
@@ -202,4 +210,10 @@
         }
     }
 
+    .fade-enter-active, .fade-leave-active {
+        transition: opacity 1.5s;
+    }
+    .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+        opacity: 0;
+    }
 </style>
